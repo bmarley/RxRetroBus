@@ -1,5 +1,29 @@
 apply plugin: 'com.android.library'
 
+ext {
+    bintrayRepo = 'rxretrobus'
+    bintrayName = 'rxretrobus-library'
+
+    publishedGroupId = 'com.blarley.rxretrobus'
+    libraryName = 'RxRetroBus'
+    artifact = 'rxretrobus'
+
+    libraryDescription = 'A library using RxJava/Retrofit to manage/cache requests, and providing' +
+        ' a bus to deliver the state throughout your application'
+
+    siteUrl = 'https://github.com/bmarley/RxRetroBus/'
+    gitUrl = 'https://github.com/bmarley/RxRetroBus.git'
+
+    libraryVersion = '0.5.0'
+
+    developerId = 'bmarley'
+    developerName = 'Blake Marley'
+
+    licenseName = 'The Apache Software License, Version 2.0'
+    licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+    allLicenses = ["Apache-2.0"]
+}
+
 android {
     compileSdkVersion 24
     buildToolsVersion "25.0.2"

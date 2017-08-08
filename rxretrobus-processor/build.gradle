@@ -1,8 +1,32 @@
 apply plugin: 'java'
 
+ext {
+    bintrayRepo = 'rxretrobus'
+    bintrayName = 'rxretrobus-processor'
+
+    publishedGroupId = 'com.blarley.rxretrobus'
+    libraryName = 'RxRetroBus-processor'
+    artifact = 'rxretrobus-processor'
+
+    libraryDescription = 'A library using RxJava/Retrofit to manage/cache requests, and providing' +
+            ' a bus to deliver the state throughout your application'
+
+    siteUrl = 'https://github.com/bmarley/RxRetroBus/'
+    gitUrl = 'https://github.com/bmarley/RxRetroBus.git'
+
+    libraryVersion = '0.5.0'
+
+    developerId = 'bmarley'
+    developerName = 'Blake Marley'
+
+    licenseName = 'The Apache Software License, Version 2.0'
+    licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+    allLicenses = ["Apache-2.0"]
+}
+
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
 }
 
-sourceCompatibility = "1.6"
-targetCompatibility = "1.6"
+sourceCompatibility = "1.7"
+targetCompatibility = "1.7"
