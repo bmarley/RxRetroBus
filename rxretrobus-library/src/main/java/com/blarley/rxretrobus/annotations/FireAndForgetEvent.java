@@ -1,4 +1,4 @@
-package com.blarley.rxretrobus.processor;
+package com.blarley.rxretrobus.annotations;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;

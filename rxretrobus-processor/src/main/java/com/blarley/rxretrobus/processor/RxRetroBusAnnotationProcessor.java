@@ -1,5 +1,10 @@
 package com.blarley.rxretrobus.processor;
 
+import com.blarley.rxretrobus.annotations.CachedEvent;
+import com.blarley.rxretrobus.annotations.FireAndForgetEvent;
+import com.blarley.rxretrobus.annotations.GenerateEvents;
+import com.blarley.rxretrobus.annotations.UncachedEvent;
+
 import java.io.IOException;
 import java.io.Writer;
 import java.util.ArrayList;
@@ -19,7 +24,7 @@ import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
 import javax.tools.JavaFileObject;
 
-@SupportedAnnotationTypes("com.blarley.rxretrobus.processor.GenerateEvents")
+@SupportedAnnotationTypes("com.blarley.rxretrobus.annotations.GenerateEvents")
 @SupportedSourceVersion(SourceVersion.RELEASE_7)
 public class RxRetroBusAnnotationProcessor extends AbstractProcessor {
 

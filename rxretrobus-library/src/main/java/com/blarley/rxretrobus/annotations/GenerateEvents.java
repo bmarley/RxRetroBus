@@ -1,4 +1,4 @@
-package com.blarley.rxretrobus.processor;
+package com.blarley.rxretrobus.annotations;
 
 public @interface GenerateEvents {
     String baseUrl() default "";

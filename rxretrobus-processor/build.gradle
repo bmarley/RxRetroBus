@@ -4,9 +4,9 @@ ext {
     bintrayRepo = 'rxretrobus'
     bintrayName = 'rxretrobus-processor'
 
-    publishedGroupId = 'com.blarley.rxretrobus'
+    PUBLISH_GROUP_ID = 'com.blarley.rxretrobus'
     libraryName = 'RxRetroBus-processor'
-    artifact = 'rxretrobus-processor'
+    PUBLISH_ARTIFACT_ID = 'rxretrobus-processor'
 
     libraryDescription = 'A library using RxJava/Retrofit to manage/cache requests, and providing' +
             ' a bus to deliver the state throughout your application'
@@ -14,7 +14,7 @@ ext {
     siteUrl = 'https://github.com/bmarley/RxRetroBus/'
     gitUrl = 'https://github.com/bmarley/RxRetroBus.git'
 
-    libraryVersion = '0.5.0'
+    PUBLISH_VERSION = '0.5.0'
 
     developerId = 'bmarley'
     developerName = 'Blake Marley'
@@ -25,7 +25,73 @@ ext {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile files('libs/rxretrobus-library.jar')
+    //compile 'com.blarley.rxretrobus:rxretrobus:0.5.0@jar' - Why doesn't this work?
+    //It seems as though it's not building the compiled version of the jar linked to the android sdk
+}
+
+task processorTask(type: Exec) {
+    commandLine 'cp', '../rxretrobus-library/build/libs/rxretrobus-library.jar', 'libs/'
+}
+
+processorTask.dependsOn(':rxretrobus-library:build')
+compileJava.dependsOn(processorTask)
+
+apply plugin: 'maven'
+
+def groupId = project.PUBLISH_GROUP_ID
+def artifactId = project.PUBLISH_ARTIFACT_ID
+def version = project.PUBLISH_VERSION
+
+def localReleaseDest = "${buildDir}/release/${version}"
+
+task javadocsJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
+task sourcesJar(type: Jar) {
+    classifier = 'sources'
+    from sourceSets.main.java.srcDirs
+}
+
+task resourcesJar(type: Jar) {
+    classifier = 'resources'
+    from sourceSets.main.resources.srcDirs
+}
+
+uploadArchives {
+    repositories.mavenDeployer {
+        pom.groupId = groupId
+        pom.artifactId = artifactId
+        pom.version = version
+        // Add other pom properties here if you want (developer details / licenses)
+        repository(url: "file://${localReleaseDest}")
+    }
+}
+
+task zipRelease(type: Zip) {
+    from localReleaseDest
+    destinationDir buildDir
+    archiveName "release-${version}.zip"
+}
+
+task generateRelease {
+    doLast {
+        println "Release ${version} can be found at ${localReleaseDest}/"
+        println "Release ${version} zipped can be found ${buildDir}/release-${version}.zip"
+    }
+}
+
+generateRelease.dependsOn(uploadArchives)
+generateRelease.dependsOn(zipRelease)
+
+
+artifacts {
+    archives sourcesJar
+    archives resourcesJar
+    archives javadocsJar
 }
 
 sourceCompatibility = "1.7"
