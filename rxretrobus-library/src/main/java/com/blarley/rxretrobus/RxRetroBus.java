@@ -34,6 +34,10 @@ public class RxRetroBus {
                 List<RetroSubscriber> subscribers = subscribersByTag.get(request.getTag());
                 if (subscribers != null) {
                     for (RetroSubscriber subscriber : subscribers) {
+                        if (request.isSticky()) {
+                            resultsByTag.remove(request.getTag());
+                        }
+
                         postSuccess(subscriber, response, request.getTag());
                     }
                 }
@@ -54,6 +58,10 @@ public class RxRetroBus {
                 List<RetroSubscriber> subscribers = subscribersByTag.get(request.getTag());
                 if (subscribers != null) {
                     for (RetroSubscriber subscriber : subscribers) {
+                        if (request.isSticky()) {
+                            resultsByTag.remove(request.getTag());
+                        }
+
                         postError(subscriber, throwable);
                     }
                 }
@@ -72,7 +80,7 @@ public class RxRetroBus {
         List<RetroSubscriber> subscribers = subscribersByTag.get(request.getTag());
         if (subscribers != null) {
             for (RetroSubscriber subscriber : subscribersByTag.get(request.getTag())) {
-                subscriber.onLoading();
+                postLoading(subscriber);
             }
         }
 
