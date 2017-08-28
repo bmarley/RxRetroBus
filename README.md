@@ -5,8 +5,8 @@ The aim of RxRetroBus is to tie together [Square's Retrofit](http://square.githu
 [ReactiveX's RxJava](https://github.com/ReactiveX/RxJava) with simple annotations to eliminate 
 boilerplate and give the programmer an event based Bus that will manage the state of an application.
 
-By simply annotating a class with ```@GenerateEvents```, RxRetroBus' annotation processor will generate 
-a file that will tie together your defined Events and Bus, allowing you to subscribe to the event's tag 
+By annotating a class with ```@GenerateEvents```, RxRetroBus' annotation processor will generate 
+files tying together your defined Events and the Bus, allowing you to publish/subscribe to the event's tag 
 in your Activities and Fragments.
 
 ## How to Use
@@ -20,7 +20,7 @@ Add these two dependencies into your build.gradle file.
     compile 'com.blarley.rxretrobus:rxretrobus:0.5.1@aar'
 ```
 
-**Ideally you'd only need RxRetroBus and it's annotation processor as dependencies; however, you'll still need to include Retrofit in your base project - I'll remove the reliance on it 
+**Ideally you'd only need RxRetroBus and it's annotation processor as dependencies; however, for now you'll still need to include Retrofit in your base project - I'll remove the reliance on it 
 and RxJava in later versions.**
 
 However, ***for now*** also add these to your dependencies:
@@ -46,12 +46,12 @@ However, ***for now*** also add these to your dependencies:
     Clients clients = new Clients(retrofitBuilder, bus);
 ```
 You'll need to either expose the clients and bus as static variables on the global App Object or use 
-Dagger/Another DI injection to wire them into your classes.
+Dagger/Another DI injection framework to wire them into your classes.
 
 ### Annotations and Their Uses
 #### GenerateEvents
 Annotate Retrofit interfaces with this annotation, supply the baseUrl of the given API in the arguments. 
-As the name suggests, the baseUrl will be used as the base URL when building the retroface client.
+As the name suggests, the baseUrl will be used as the base URL when building the retrofit client.
 
 ```java
 @GenerateEvents(baseUrl = "http://api.blarley.com/")
@@ -165,10 +165,8 @@ RetroSubscribers.
 
 ### Subscribing
 Currently, any class that will subscribe to an RxRetroBus will need to `implements RetroSubscriberReceiver`.  
-This interface will force the class to implement `List<RetroSubscriber> getSubscribers();`, which is what 
-the bus looks for when a class subscribes.
-
-As this method suggests, it must return a list of `RetroSubscriber` objects.
+This interface will force the class to implement `List<RetroSubscriber> getSubscribers();`.  
+As this method suggests, it must return a list of `RetroSubscriber` objects. This is the method the bus calls to register subscribers.
 
 These look like this:
 ```java
